@@ -15,7 +15,7 @@ class EstimateModelHandler:
             cls._instance = super(EstimateModelHandler, cls).__new__(cls)
         return cls._instance
     
-    def __init__(self) -> None:
+    def __init__(self) :
         self._tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
         self._tokenizer.pad_token = "[PAD]"
 
@@ -43,13 +43,13 @@ class EstimateModelHandler:
         """Set a model for a given organization ID."""
         self._models[organization_id] = model
     
-    def __get_weights_path(self,organization_id)->str|None:
+    def __get_weights_path(self,organization_id):
         if os.path.exists(f'{MODEL_STORE_PATH}/{organization_id}/{WEIGHTS_FILE_NAME}'):
             return f'{MODEL_STORE_PATH}/{organization_id}/{WEIGHTS_FILE_NAME}'
         else:
             return None
     
-    def __initialize_new_model(self, organization_id)->GPT2SP|None:
+    def __initialize_new_model(self, organization_id):
         config = GPT2Config(num_labels=1, pad_token_id=50256)
         gpt2sp = GPT2SP.from_pretrained('gpt2', config=config)
 
