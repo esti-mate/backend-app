@@ -60,8 +60,9 @@ class EstimateModelHandler:
             result =  download_file_from_gcs(MODEL_ARTIFACTS_BUCKET, f'{organization_id}/{WEIGHTS_FILE_NAME}', f'{MODEL_STORE_PATH}/{organization_id}/{WEIGHTS_FILE_NAME}')
             if result:
                 state_dict_path = f'{MODEL_STORE_PATH}/{organization_id}/{WEIGHTS_FILE_NAME}'
+            else:
+                return None
             #Can't find the training artifacts
-            return None
 
         state_dict = torch.load(state_dict_path)
         gpt2sp.load_state_dict(state_dict)
