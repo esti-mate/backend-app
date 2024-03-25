@@ -2,3 +2,4 @@ env
 model_store
 __pycache__
 ./startup-script.sh
+*.csv

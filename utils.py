@@ -1,5 +1,7 @@
 from google.cloud import storage
 import os
+import random
+import string
 
 def download_file_from_gcs(bucket_name, source_blob_name, destination_file_path):
     """
@@ -31,3 +33,14 @@ def download_file_from_gcs(bucket_name, source_blob_name, destination_file_path)
         print(f"The blob '{source_blob_name}' does not exist.")
         return False
 
+
+def get_random_string():
+    # initializing size of string
+    N = 7
+    
+    # using random.choices()
+    # generating random strings
+    res = ''.join(random.choices(string.ascii_uppercase +
+                                string.digits, k=N))
+    
+    return res
