@@ -1,8 +1,9 @@
-from transformers import GPT2Config, GPT2Tokenizer
-from GPT2SP.GPT2ForSequenceClassification import GPT2ForSequenceClassification as GPT2SP
+from transformers import BertConfig, BertTokenizer
+from GPT2SP.BertSP import BertSP
 import torch
 import os
 from utils import download_file_from_gcs
+from constants import MODEL_ID, TOKENIZER_ID
 from constants import MODEL_ARTIFACTS_BUCKET, WEIGHTS_FILE_NAME, MODEL_STORE_PATH
 
 class EstimateModelHandler:
@@ -16,8 +17,8 @@ class EstimateModelHandler:
         return cls._instance
     
     def __init__(self) :
-        self._tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-        self._tokenizer.pad_token = "[PAD]"
+        self._tokenizer = BertTokenizer.from_pretrained(TOKENIZER_ID)
+        # self._tokenizer.pad_token = "[PAD]"
 
     def get_model(self, organization_id):
         """Retrieve a model for a given organization ID, if it exists."""
@@ -50,8 +51,8 @@ class EstimateModelHandler:
             return None
     
     def __initialize_new_model(self, organization_id):
-        config = GPT2Config(num_labels=1, pad_token_id=50256)
-        gpt2sp = GPT2SP.from_pretrained('gpt2', config=config)
+        config = BertConfig(num_labels=1, pad_token_id=0)
+        model = BertSP.from_pretrained(MODEL_ID, config=config)
 
         state_dict_path = self.__get_weights_path(organization_id)
 
@@ -65,9 +66,8 @@ class EstimateModelHandler:
             #Can't find the training artifacts
 
         state_dict = torch.load(state_dict_path)
-        gpt2sp.load_state_dict(state_dict)
-        gpt2sp.to('cpu')
-        gpt2sp.eval()
-
-        self.__set_model(organization_id, gpt2sp)
+        model.load_state_dict(state_dict)
+        model.to('cpu')
+        model.eval()
+        self.__set_model(organization_id, model)
         return self.get_model(organization_id)

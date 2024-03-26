@@ -46,8 +46,15 @@ def start_train_job():
     display_name = req["display_name"] 
     machine_type = req["machine_type"]
     train_ds_path = req["train_ds_path"]
+    org_id = req["org_id"]
+    sequence_length = req["sequence_length"]
+    batch_size_ratio = req["batch_size_ratio"]
+    epoch = req["epoch"]
 
-    return train(display_name=display_name, machine_type=machine_type, train_ds_path=train_ds_path)
+    res = train(display_name=display_name, machine_type=machine_type, train_ds_path=train_ds_path,org_id=org_id,epoch=epoch, sequence_length=sequence_length, batch_size_ratio=batch_size_ratio)
+
+
+    return res
 
 @app.route("/export-csv", methods=["POST"])
 def export_csv():
@@ -76,7 +83,7 @@ def export_csv():
 
         if len(issues) == response["total"]:
             break
-
+    
     # Write issues to CSV file
     with open(dataset_file_path, mode="w") as file:
         writer = csv.writer(file)
@@ -86,7 +93,8 @@ def export_csv():
                 [
                     issue["key"],
                     issue["fields"]["summary"],
-                    issue["fields"]["description"]
+                    issue["fields"]["description"],
+                    issue["fields"]["customfield_10016"]
                 ]
             )
 
