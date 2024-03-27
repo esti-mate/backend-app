@@ -15,7 +15,7 @@ def download_file_from_gcs(bucket_name, source_blob_name, destination_file_path)
     Returns:
     bool: True if the file was downloaded, False otherwise.
     """
-   
+    print(f"%%% Downloading '{source_blob_name}' to '{destination_file_path}'.")
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
 
