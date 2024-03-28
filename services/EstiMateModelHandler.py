@@ -67,8 +67,8 @@ class EstimateModelHandler:
             else:
                 return None
             #Can't find the training artifacts
-
-        state_dict = torch.load(state_dict_path)
+        
+        state_dict = torch.load(state_dict_path, map_location=torch.device('cpu') )
         model.load_state_dict(state_dict)
         model.to(DEVICE)
         model.eval()
