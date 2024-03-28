@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from services.start_train_job import start_train_job as train
+from services.vertex_ai import start_train_job as train
 from services.run_prediction import get_predictions as predict
 from jiraone import LOGIN , endpoint
 from services.cloud_storage import upload_to_gcp
@@ -105,6 +105,36 @@ def export_csv():
     
     # return jsonify({"message": "CSV file exported successfully"})
 
+
+# @app.route("/train-job-status/<job_id>", methods=["GET"])
+# def train_job_status(job_id):
+#     """Get the status of a training job given the job ID."""
+#     job_status = [
+#     "JOB_STATE_UNSPECIFIED",
+#     "JOB_STATE_QUEUED",
+#     "JOB_STATE_PENDING",
+#     "JOB_STATE_RUNNING",
+#     "JOB_STATE_SUCCEEDED",
+#     "JOB_STATE_FAILED",
+#     "JOB_STATE_CANCELLING",
+#     "JOB_STATE_CANCELLED",
+#     "JOB_STATE_PAUSED",
+#     "JOB_STATE_EXPIRED",
+#     "JOB_STATE_UPDATING",
+#     "JOB_STATE_PARTIALLY_SUCCEEDED"
+#     ]
+    
+#     try:
+#         if not job_id:
+#             return jsonify({"error": "Missing job ID"}), 400
+
+
+#         res = get_train_job_status(job_id)
+
+        
+#         return jsonify({ "status":job_status[res.state], "startTime": res.start_time ,"name": res.name })
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3003)
