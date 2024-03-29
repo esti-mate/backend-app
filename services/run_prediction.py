@@ -22,6 +22,7 @@ def get_predictions(organization_id, text):
 
         response_data = {"organizationId": organization_id, "prediction": str(logits[0][0])}
         handler.clear_all_models()
+        print("prediction result :",response_data)
         
         return jsonify(response_data)
     except ValueError:
