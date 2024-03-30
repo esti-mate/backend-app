@@ -25,5 +25,6 @@ def get_predictions(organization_id, text):
         print("prediction result :",response_data)
         
         return jsonify(response_data)
-    except ValueError:
+    except ValueError as e:
+        print("Error:", str(e))
         return jsonify({"error": "Invalid 'organizationId'"}), 400
