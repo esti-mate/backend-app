@@ -18,7 +18,7 @@ class EstimateModelHandler:
     
     def __init__(self) :
         self._tokenizer:GPT2Tokenizer = GPT2Tokenizer.from_pretrained(TOKENIZER_ID)
-        # self._tokenizer.pad_token = "[PAD]"
+        self._tokenizer.pad_token = "[PAD]"
 
     def get_model(self, organization_id):
         """Retrieve a model for a given organization ID, if it exists."""
