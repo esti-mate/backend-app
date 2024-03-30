@@ -32,7 +32,7 @@ def get_predictions():
     if "organizationId" not in data or "text" not in data or "description" not in data:
         return jsonify({"error": "Missing 'organizationId' or 'text' in request"}), 400
 
-    final_text = f"[CLS]{data['text']}[SEP]{data['description']}[SEP]"
+    final_text = f"{data['text']} | {data['description']}"
     res = predict(organization_id=data["organizationId"], text=final_text)
 
     return res

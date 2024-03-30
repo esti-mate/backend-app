@@ -1,5 +1,5 @@
-from transformers import BertConfig, BertTokenizer, PreTrainedModel
-from GPT2SP.BertSP import BertSP
+from transformers import GPT2Config, GPT2Tokenizer, PreTrainedModel
+from GPT2SP.GPT2ForSequenceClassification import GPT2ForSequenceClassification as GPT2SP
 import torch
 import os
 from utils import download_file_from_gcs
@@ -9,7 +9,7 @@ from constants import MODEL_ARTIFACTS_BUCKET, WEIGHTS_FILE_NAME, MODEL_STORE_PAT
 class EstimateModelHandler:
     _instance = None
     _models:PreTrainedModel = {}
-    _tokenizer:BertTokenizer = None
+    _tokenizer:GPT2Tokenizer = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -17,7 +17,7 @@ class EstimateModelHandler:
         return cls._instance
     
     def __init__(self) :
-        self._tokenizer:BertTokenizer = BertTokenizer.from_pretrained(TOKENIZER_ID)
+        self._tokenizer:GPT2Tokenizer = GPT2Tokenizer.from_pretrained(TOKENIZER_ID)
         # self._tokenizer.pad_token = "[PAD]"
 
     def get_model(self, organization_id):
@@ -54,8 +54,8 @@ class EstimateModelHandler:
     
     def __initialize_new_model(self, organization_id):
         print(f'Initializing new model for {organization_id}')
-        config = BertConfig(num_labels=1, pad_token_id=0)
-        model = BertSP.from_pretrained(MODEL_ID, config=config)
+        config = GPT2Config(num_labels=1,  pad_token_id=50256)
+        model = GPT2SP.from_pretrained(MODEL_ID, config=config)
 
         state_dict_path = self.__get_weights_path(organization_id)
 
