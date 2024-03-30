@@ -2,10 +2,11 @@ import torch
 from flask import jsonify
 from services.EstiMateModelHandler import EstimateModelHandler
 from constants import SEQUENCE_LENGTH
+
+handler = EstimateModelHandler()
 def get_predictions(organization_id, text):
     
     try:
-        handler = EstimateModelHandler()
         model = handler.get_model(organization_id)
         tokenizer = handler.get_tokenizer()
 
@@ -21,7 +22,7 @@ def get_predictions(organization_id, text):
         logits.tolist()
 
         response_data = {"organizationId": organization_id, "prediction": str(logits[0][0])}
-        handler.clear_all_models()
+        # handler.clear_all_models()
         print("prediction result :",response_data)
         
         return jsonify(response_data)
